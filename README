@@ -1,0 +1,39 @@
+1 - Map Viewer (Flask + Docker)
+
+A Dockerized Flask web application that visualizes a custom list of cities on an interactive world map using Plotly.
+Cities are grouped by category and displayed with colored markers, while countries are highlighted on a choropleth map.
+
+---
+
+## Features
+
+- Interactive world map (Plotly)
+- City markers grouped by category
+- Country highlighting
+- Flask web server
+
+---
+
+## Project Concept
+
+This project separates data into two layers:
+
+- **Static dataset**: `worldcities.csv` (inside Docker image)
+- **User dataset**: `cities.csv` (custom list of cities)
+
+This allows the map to be reusable while still customizable.
+
+---
+
+## 📁 Project Structure
+
+```text
+project/
+├── map_app.py
+├── Dockerfile
+├── requirements.txt
+├── worldcities.csv
+└── cities.csv
+
+
+rodricar25/map-app

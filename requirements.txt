@@ -1,0 +1,4 @@
+flask==3.0.3
+pandas==2.2.2
+plotly==5.23.0
+pycountry==24.6.1
