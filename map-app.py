@@ -10,8 +10,7 @@ app = Flask(__name__)
 # -------------------------------
 # Parameters
 # -------------------------------
-#BASE_PATH = r"C:\_rodricar\e-learning\work\travel_2026"
-BASE_PATH = r"/usr/src/app"
+BASE_PATH = r"C:\_rodricar\e-learning\work\travel_2026"
 cities_file = os.path.join(BASE_PATH, "cities.csv")
 worldcities_file = os.path.join(BASE_PATH, "worldcities.csv")
 
@@ -95,7 +94,12 @@ def build_figure():
         color="highlight",
         color_continuous_scale=["burlywood", "sienna"],
         range_color=[0, 1],
-        projection=MAP_PROJECTION
+        projection=MAP_PROJECTION,
+        hover_name = "country"
+    )
+
+    fig.update_traces(
+        hovertemplate="%{hovertext}<extra></extra>"
     )
 
     # City markers
@@ -121,11 +125,15 @@ def build_figure():
 
     fig.update_geos(
         showcountries=True,
+        countrycolor="black",
         showland=True,
         landcolor="wheat",
         showocean=True,
         oceancolor="lightskyblue",
+        showlakes=True,
         lakecolor="lightskyblue",
+        showcoastlines=True,
+        coastlinecolor="black",
         projection_type=MAP_PROJECTION
     )
 
@@ -151,10 +159,10 @@ def index():
     return render_template_string("""
     <html>
         <head>
-            <title>Travel Map</title>
+            <title>My World Map</title>
         </head>
         <body>
-            <h1>World Map</h1>
+            <h1>My World Map</h1>
             {{ graph|safe }}
         </body>
     </html>
@@ -162,4 +170,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(debug=True)
