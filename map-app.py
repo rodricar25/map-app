@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template_string
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -7,12 +7,36 @@ import os
 
 app = Flask(__name__)
 
-cities_file = "/usr/src/app/cities.csv"
-worldcities_file = "/usr/src/app/worldcities.csv"
+# -------------------------------
+# Parameters
+# -------------------------------
+#BASE_PATH = r"C:\_rodricar\e-learning\work\travel_2026"
+BASE_PATH = r"/usr/src/app"
+cities_file = os.path.join(BASE_PATH, "cities.csv")
+worldcities_file = os.path.join(BASE_PATH, "worldcities.csv")
+
+MAX_GROUP = 4
+SHOW_NAMES_ON_MAP = False
+MAP_PROJECTION = "natural earth"
+
+GROUPS = {
+    1: {"name": "Group One", "color": "green"},
+    2: {"name": "Group Two", "color": "blue"},
+    3: {"name": "Group Three", "color": "orange"},
+    4: {"name": "Group Four", "color": "yellow"},
+}
+
+GROUP_NAMES = {k: v["name"] for k, v in GROUPS.items()}
 
 # -------------------------------
 # Helpers
 # -------------------------------
+def normalize_text(df, cols):
+    for col in cols:
+        df[col] = df[col].str.strip().str.lower()
+    return df
+
+
 def country_to_iso3(name):
     try:
         return pycountry.countries.lookup(name).alpha_3
@@ -20,80 +44,78 @@ def country_to_iso3(name):
         return None
 
 
-def load_data():
-    # User input (NEW: 3 columns only)
-    df = pd.read_csv(
-        cities_file,
-        sep=";",
-        usecols=["group", "city", "country"]
-    )
-
-    # Static reference dataset
+def build_figure():
+    # Load data
     cities = pd.read_csv(worldcities_file)
+    df = pd.read_csv(cities_file, sep=";", encoding="latin1")
+    df = df[df["group"] <= MAX_GROUP]
 
     # Normalize
-    df["city"] = df["city"].str.strip().str.lower()
-    df["country"] = df["country"].str.strip().str.lower()
+    df = normalize_text(df, ["city", "country"])
+    cities = normalize_text(cities, ["city", "country"])
 
-    cities["city"] = cities["city"].str.strip().str.lower()
-    cities["country"] = cities["country"].str.strip().str.lower()
-
-    df["group"] = df["group"].astype(int)
-
-    # Merge coordinates
-    merged = df.merge(
-        cities[["city", "country", "lat", "lng"]],
+    # Merge
+    merged_df = df.merge(
+        cities[["city", "country", "lat", "lng", "population"]],
         on=["city", "country"],
         how="left"
     )
 
-    merged = merged.dropna(subset=["lat", "lng"])
+    df = merged_df.dropna(subset=["lat", "lng"]).copy()
 
-    return merged
+    df["hover_text"] = df["city"].str.title() + ", " + df["country"].str.upper()
+    df["group"] = df["group"].astype(int)
 
+    df = (
+        df.groupby(["city", "country"], as_index=False)
+          .agg(
+              group=("group", "min"),
+              lat=("lat", "first"),
+              lng=("lng", "first"),
+              hover_text=("hover_text", "first")
+          )
+    )
 
-def build_map(df):
-    # Country highlight
+    df["group_name"] = df["group"].map(GROUP_NAMES)
+
+    counts = df.groupby("group").size().to_dict()
+
+    # Countries highlight
     countries_df = pd.DataFrame({
         "country": df["country"].str.title().unique()
     })
-
     countries_df["iso_alpha"] = countries_df["country"].map(country_to_iso3)
+    countries_df["highlight"] = 1
     countries_df = countries_df.dropna(subset=["iso_alpha"])
 
+    # Base map
     fig = px.choropleth(
         countries_df,
         locations="iso_alpha",
-        color_discrete_sequence=["burlywood"],
-        projection="natural earth"
+        color="highlight",
+        color_continuous_scale=["burlywood", "sienna"],
+        range_color=[0, 1],
+        projection=MAP_PROJECTION
     )
 
-    # City markers by group
-    groups = sorted(df["group"].unique())
-
-    colors = {
-        1: "green",
-        2: "blue",
-        3: "orange",
-        4: "yellow",
-        5: "red"
-    }
-
-    for g in groups:
-        group_df = df[df["group"] == g]
+    # City markers
+    for group_id, group_info in GROUPS.items():
+        group_df = df[df["group"] == group_id]
 
         fig.add_trace(
             go.Scattergeo(
                 lon=group_df["lng"],
                 lat=group_df["lat"],
-                text=group_df["city"].str.title(),
-                mode="markers",
+                text=group_df["hover_text"],
                 marker=dict(
                     size=8,
-                    color=colors.get(g, "black"),
+                    color=group_info["color"],
+                    opacity=0.9,
                     line=dict(width=0.5, color="black")
                 ),
-                name=f"Group {g} ({len(group_df)})"
+                mode="markers",
+                name=f"{group_info['name']} ({counts.get(group_id, 0)})",
+                hoverinfo="text"
             )
         )
 
@@ -104,26 +126,40 @@ def build_map(df):
         showocean=True,
         oceancolor="lightskyblue",
         lakecolor="lightskyblue",
-        projection_type="natural earth"
+        projection_type=MAP_PROJECTION
     )
 
     fig.update_layout(
-        title="My Cities Map",
-        legend=dict(title="Groups"),
+        title="<b>Cities Around the World</b>",
+        legend=dict(x=1.1),
         coloraxis_showscale=False
     )
 
-    return fig.to_html(full_html=True)
+    return fig
 
 
 # -------------------------------
-# Route
+# Flask route
 # -------------------------------
 @app.route("/")
-def home():
-    df = load_data()
-    return build_map(df)
+def index():
+    fig = build_figure()
+
+    # Convert Plotly figure to HTML
+    graph_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
+
+    return render_template_string("""
+    <html>
+        <head>
+            <title>Travel Map</title>
+        </head>
+        <body>
+            <h1>World Map</h1>
+            {{ graph|safe }}
+        </body>
+    </html>
+    """, graph=graph_html)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
