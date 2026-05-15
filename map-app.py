@@ -10,7 +10,8 @@ app = Flask(__name__)
 # -------------------------------
 # Parameters
 # -------------------------------
-BASE_PATH = r"C:\_rodricar\e-learning\work\travel_2026"
+#BASE_PATH = r"C:\_rodricar\e-learning\work\travel_2026"
+BASE_PATH = r"/usr/src/app"
 cities_file = os.path.join(BASE_PATH, "cities.csv")
 worldcities_file = os.path.join(BASE_PATH, "worldcities.csv")
 
