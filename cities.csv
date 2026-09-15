@@ -10,25 +10,25 @@ group;year;city;country
 1;2009;Paris;France
 1;2011;Rio de Janeiro;Brazil
 1;2023;Curitiba;Brazil
-1;2024;Balneário Camboriú;Brazil
+1;2024;BalneÃ¡rio CamboriÃº;Brazil
 1;2024;Florianopolis;Brazil
 1;2024;Vila Velha;Brazil
 1;2025;Joao Pessoa;Brazil
 1;2025;Maceio;Brazil
 1;2025;Natal;Brazil
-1;2025;Vitória;Brazil
+1;2025;VitÃ³ria;Brazil
 1;2026;Goiania;Brazil
 1;2026;Santos;Brazil
-2;1987;Guarujá;Brazil
+2;1987;GuarujÃ¡;Brazil
 2;1990;Ubatuba;Brazil
 2;1992;Bauru;Brazil
-2;1995;Peruíbe;Brazil
+2;1995;PeruÃ­be;Brazil
 2;1996;Americana;Brazil
-2;1997;Três Corações;Brazil
+2;1997;TrÃªs CoraÃ§Ãµes;Brazil
 2;1999;Barueri;Brazil
-2;2000;Québec;Canada
+2;2000;QuÃ©bec;Canada
 2;2002;Melbourne;Australia
-2;2005;São Luís;Brazil
+2;2005;SÃ£o LuÃ­s;Brazil
 2;2006;Amsterdam;Netherlands
 2;2009;Brasilia;Brazil
 2;2010;Lyon;France
@@ -62,7 +62,7 @@ group;year;city;country
 2;2019;Dubrovnik;Croatia
 2;2019;Florence;Italy
 2;2019;Frankfurt;Germany
-2;2019;Kraków;Poland
+2;2019;KrakÃ³w;Poland
 2;2019;Milan;Italy
 2;2019;Naples;Italy
 2;2019;Paris;France
@@ -77,7 +77,7 @@ group;year;city;country
 2;2023;Tallinn;Estonia
 2;2023;Vienna;Austria
 2;2024;Heidelberg;Germany
-2;2024;København;Denmark
+2;2024;KÃ¸benhavn;Denmark
 2;2024;Lisbon;Portugal
 2;2024;Luxembourg;Luxembourg
 2;2024;Paris;France
@@ -87,19 +87,20 @@ group;year;city;country
 2;2025;Berlin;Germany
 2;2025;Dresden;Germany
 2;2025;Leipzig;Germany
-2;2025;Nürnberg;Germany
+2;2025;NÃ¼rnberg;Germany
 2;2025;Paris;France
 2;2026;Belgrade;Serbia
-2;2026;Istanbul;Türkiye
+2;2026;Istanbul;TÃ¼rkiye
 2;2026;Nis;Serbia
 2;2026;Sofia;Bulgaria
-3;1990;Campos do Jordão;Brazil
+3;1990;Campos do JordÃ£o;Brazil
 3;1990;Santo Antonio do Pinhal;Brazil
 3;1994;Vinhedo;Brazil
 3;1997;Paraty;Brazil
 3;1997;Sao Tome das Letras;Brazil
-3;2000;Montréal;Canada
+3;2000;MontrÃ©al;Canada
 3;2000;Niagara-on-the-Lake;Canada
+3;2000;Sainte-Anne-de-BeauprÃ©;Canada
 3;2002;Canberra;Australia
 3;2002;Grampians National Park;Australia
 3;2002;Great Ocean Road;Australia
@@ -119,8 +120,8 @@ group;year;city;country
 3;2014;Stonehenge;United Kingdom
 3;2014;Vatican City;Vatican
 3;2014;Windsor;United Kingdom
-3;2015;Füssen;Germany
-3;2015;Kutná Hora;Czech Republic
+3;2015;FÃ¼ssen;Germany
+3;2015;KutnÃ¡ Hora;Czech Republic
 3;2015;Potsdam;Germany
 3;2016;Oswiecim;Poland
 3;2016;Wieliczka;Poland
@@ -132,7 +133,7 @@ group;year;city;country
 3;2019;Pompei;Italy
 3;2019;Vernazza;Italy
 3;2024;Ercolano;Italy
-3;2024;Itajaí;Brazil
+3;2024;ItajaÃ­;Brazil
 3;2024;Morretes;Brazil
 3;2024;Postojna;Slovenia
 3;2024;Predjama;Slovenia
@@ -143,7 +144,7 @@ group;year;city;country
 4;2008;Santo Andre;Brazil
 4;1998;Mogi das Cruzes;Brazil
 4;2000;Sao Jose dos Campos;Brazil
-4;1980;Tremembé;Brazil
+4;1980;TremembÃ©;Brazil
 4;2024;Guarulhos;Brazil
 4;2017;Adamantina;Brazil
 1;2026;Campo Grande;Brazil
